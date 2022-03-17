@@ -1,0 +1,40 @@
+[package]
+name = "udptest"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+futures = { version = "0.3.0", features = ["thread-pool"]}
+tokio = { version = "1.17.0", features = ["full", "tracing"] }
+tokio-util = { version = "0.7.0", features = ["full"] }
+bytes = "1.0.0"
+
+[[bin]]
+name = "connect"
+path = "src/connect.rs"
+
+[[bin]]
+name = "tcptest"
+path = "src/tcptest.rs"
+
+[[bin]]
+name = "udpsvr"
+path = "src/udpsvr.rs"
+
+[[bin]]
+name = "udpsplit"
+path = "src/udpsplit.rs"
+
+[[bin]]
+name = "threadtest"
+path = "src/threadtest.rs"
+
+[[bin]]
+name = "structest"
+path = "src/structest.rs"
+
+[[bin]]
+name = "port-sniffer"
+path = "src/port-sniffer.rs"
