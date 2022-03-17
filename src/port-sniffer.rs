@@ -9,7 +9,7 @@ use std::thread;
 const MAX: u16 = 65535;
 
 struct Arguments {
-    flag: String,
+    _flag: String,
     ipaddr: IpAddr,
     threads: u16,
 }
@@ -24,7 +24,7 @@ impl Arguments {
         let f = args[1].clone();
         if let Ok(ipaddr) = IpAddr::from_str(&f) {
             return Ok(Arguments {
-                flag: String::from(""),
+                _flag: String::from(""),
                 ipaddr,
                 threads: 4,
             });
@@ -53,7 +53,7 @@ impl Arguments {
                 };
                 return Ok(Arguments {
                     threads,
-                    flag,
+                    _flag: flag,
                     ipaddr,
                 });
             } else {
