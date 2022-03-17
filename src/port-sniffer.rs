@@ -30,16 +30,20 @@ impl Arguments {
             });
         } else {
             let flag = args[1].clone();
-            if flag.contains("-h") || flag.contains("-help") && args.len() == 2 {
+            if flag.contains("-h") && args.len() == 2 {
                 println!(
-                    "Usage: -j to select how many threads you want
-                \n\r       -h or -help to show this help message"
+                    "Usage: -j <thread_count> <target_IP_address>
+                \n\r       -h or --help to show this help message"
                 );
                 return Err("help");
             } else if flag.contains("-h") || flag.contains("-help") {
                 return Err("too many arguments");
             } else if flag.contains("-j") {
-                let ipaddr = match IpAddr::from_str(&args[3]) {
+                let addr_str =  match args.get(3) {
+                    None => return Err("please assign an IP address"),
+                    Some(a) => a,
+                };
+                let ipaddr = match IpAddr::from_str(addr_str) {
                     Ok(s) => s,
                     Err(_) => return Err("not a valid IPADDR; must be IPv4 or IPv6"),
                 };
@@ -82,12 +86,10 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let program = args[0].clone();
     let arguments = Arguments::new(&args).unwrap_or_else(|err| {
-        if err.contains("help") {
-            process::exit(0);
-        } else {
+        if !err.contains("help") {
             eprintln!("{} problem parsing arguments: {}", program, err);
-            process::exit(0);
         }
+        process::exit(0);
     });
 
     let num_threads = arguments.threads;
