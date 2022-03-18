@@ -38,3 +38,7 @@ path = "src/structest.rs"
 [[bin]]
 name = "port-sniffer"
 path = "src/port-sniffer.rs"
+
+[[bin]]
+name = "chat"
+path = "src/chat.rs"
