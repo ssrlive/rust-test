@@ -28,8 +28,8 @@ name = "tcptest"
 path = "src/tcptest.rs"
 
 [[bin]]
-name = "udpsvr"
-path = "src/udpsvr.rs"
+name = "echo-udp"
+path = "src/echo-udp.rs"
 
 [[bin]]
 name = "udpsplit"

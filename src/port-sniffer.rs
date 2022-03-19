@@ -23,11 +23,11 @@ impl Arguments {
         }
         let f = args[1].clone();
         if let Ok(ipaddr) = IpAddr::from_str(&f) {
-            return Ok(Arguments {
+            Ok(Arguments {
                 _flag: String::from(""),
                 ipaddr,
                 threads: 4,
-            });
+            })
         } else {
             let flag = args[1].clone();
             if flag.contains("-h") && args.len() == 2 {
@@ -35,9 +35,9 @@ impl Arguments {
                     "Usage: -j <thread_count> <target_IP_address>
                 \n\r       -h or --help to show this help message"
                 );
-                return Err("help");
+                Err("help")
             } else if flag.contains("-h") || flag.contains("-help") {
-                return Err("too many arguments");
+                Err("too many arguments")
             } else if flag.contains("-j") {
                 let addr_str =  match args.get(3) {
                     None => return Err("please assign an IP address"),
@@ -51,13 +51,13 @@ impl Arguments {
                     Ok(s) => s,
                     Err(_) => return Err("failed to parse thread number"),
                 };
-                return Ok(Arguments {
+                Ok(Arguments {
                     threads,
                     _flag: flag,
                     ipaddr,
-                });
+                })
             } else {
-                return Err("invalid syntax");
+                Err("invalid syntax")
             }
         }
     }
@@ -109,8 +109,8 @@ fn main() {
         out.push(p);
     }
 
-    println!("");
-    out.sort();
+    println!();
+    out.sort_unstable();
     for v in out {
         println!("{} is open", v);
     }

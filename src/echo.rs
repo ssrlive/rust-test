@@ -55,7 +55,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         // which will allow all of our clients to be processed concurrently.
 
         tokio::spawn(async move {
-            println!("Client {:?} comes in", addr);
+            println!("Client {:?} incoming", addr);
 
             let mut buf = vec![0; 1024];
 
@@ -74,13 +74,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
                     return;
                 }
 
-                match socket.write_all(&buf[0..n]).await {
-                    Err(e) => {
-                        println!("Failed to write data to client {:?}, error: {}", addr, e);
-                        return;
-                    }
-                    _ => {}
-                };
+                if let Err(e) = socket.write_all(&buf[0..n]).await {
+                    println!("Failed to write data to client {:?}, error: {}", addr, e);
+                    return;
+                }
             }
         });
     }

@@ -2,11 +2,11 @@
 //!
 //! If you're on Unix you can test this out by in one terminal executing:
 //!
-//!     cargo run --example echo-udp
+//!     cargo run --bin echo-udp
 //!
 //! and in another terminal you can run:
 //!
-//!     cargo run --example connect -- --udp 127.0.0.1:8080
+//!     cargo run --bin connect -- --udp 127.0.0.1:8080
 //!
 //! Each line you type in to the `nc` terminal should be echo'd back to you!
 
@@ -52,7 +52,7 @@ impl Server {
 async fn main() -> Result<(), Box<dyn Error>> {
     let addr = env::args()
         .nth(1)
-        .unwrap_or_else(|| "0.0.0.0:8088".to_string());
+        .unwrap_or_else(|| "0.0.0.0:8080".to_string());
 
     let socket = UdpSocket::bind(&addr).await?;
     println!("Listening on: {}", socket.local_addr()?);
