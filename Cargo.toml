@@ -42,3 +42,11 @@ path = "src/port-sniffer.rs"
 [[bin]]
 name = "chat"
 path = "src/chat.rs"
+
+[[bin]]
+name = "chat2_svr"
+path = "src/chat2_svr.rs"
+
+[[bin]]
+name = "chat2_cli"
+path = "src/chat2_cli.rs"
