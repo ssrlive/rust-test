@@ -44,7 +44,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     loop {
         // Asynchronously wait for an inbound socket.
-        let (mut socket, _) = listener.accept().await?;
+        let (mut socket, addr) = listener.accept().await?;
 
         // And this is where much of the magic of this server happens. We
         // crucially want all clients to make progress concurrently, rather than
@@ -55,23 +55,32 @@ async fn main() -> Result<(), Box<dyn Error>> {
         // which will allow all of our clients to be processed concurrently.
 
         tokio::spawn(async move {
+            println!("Client {:?} comes in", addr);
+
             let mut buf = vec![0; 1024];
 
             // In a loop, read data from the socket and write the data back.
             loop {
-                let n = socket
-                    .read(&mut buf)
-                    .await
-                    .expect("failed to read data from socket");
+                let n = match socket.read(&mut buf).await {
+                    Ok(n) => n,
+                    Err(e) => {
+                        println!("Failed to read data from client {:?}, error: {}", addr, e);
+                        return;
+                    }
+                };
 
                 if n == 0 {
+                    println!("Client {:?} closed", addr);
                     return;
                 }
 
-                socket
-                    .write_all(&buf[0..n])
-                    .await
-                    .expect("failed to write data to socket");
+                match socket.write_all(&buf[0..n]).await {
+                    Err(e) => {
+                        println!("Failed to write data to client {:?}, error: {}", addr, e);
+                        return;
+                    }
+                    _ => {}
+                };
             }
         });
     }
