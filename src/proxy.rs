@@ -60,17 +60,17 @@ async fn main() -> Result<(), Box<dyn Error>> {
 async fn transfer(mut inbound: TcpStream, proxy_addr: String) -> Result<(), Box<dyn Error>> {
     let mut outbound = TcpStream::connect(proxy_addr).await?;
 
-    let (mut ri, mut wi) = inbound.split();
-    let (mut ro, mut wo) = outbound.split();
+    let (mut inb_rd, mut inb_wr) = inbound.split();
+    let (mut out_rd, mut out_wr) = outbound.split();
 
     let client_to_server = async {
-        io::copy(&mut ri, &mut wo).await?;
-        wo.shutdown().await
+        io::copy(&mut inb_rd, &mut out_wr).await?;
+        out_wr.shutdown().await
     };
 
     let server_to_client = async {
-        io::copy(&mut ro, &mut wi).await?;
-        wi.shutdown().await
+        io::copy(&mut out_rd, &mut inb_wr).await?;
+        inb_wr.shutdown().await
     };
 
     tokio::try_join!(client_to_server, server_to_client)?;
