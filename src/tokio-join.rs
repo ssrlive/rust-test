@@ -22,7 +22,7 @@ async fn async_main() {
     let f1 = function1();
     let f2 = function2();
 
-    // 使用await则会顺序执行，使用join则会并发执行f1和f2
+    // 使用 await 则会顺序执行，使用 join 则会并发执行 f0, f1 和 f2
     // f0.await;
     // f1.await;
     // f2.await;
@@ -35,3 +35,8 @@ fn main() {
     let runtime = Runtime::new().unwrap();
     runtime.block_on(async_main());
 }
+
+// #[tokio::main]
+// async fn main() {
+//     tokio::join!(function0(), function1(), function2());
+// }
