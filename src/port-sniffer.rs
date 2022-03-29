@@ -39,7 +39,7 @@ impl Arguments {
             } else if flag.contains("-h") || flag.contains("-help") {
                 Err("too many arguments")
             } else if flag.contains("-j") {
-                let addr_str =  match args.get(3) {
+                let addr_str = match args.get(3) {
                     None => return Err("please assign an IP address"),
                     Some(a) => a,
                 };

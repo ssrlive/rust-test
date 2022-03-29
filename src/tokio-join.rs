@@ -1,5 +1,5 @@
-use tokio::runtime::Runtime;
 use tokio;
+use tokio::runtime::Runtime;
 
 async fn function0() {
     tokio::time::sleep(tokio::time::Duration::from_secs(2)).await;

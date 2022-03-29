@@ -2,7 +2,7 @@ use std::thread;
 use std::time::Duration;
 
 fn main() {
-    let h = thread::spawn(||{
+    let h = thread::spawn(|| {
         for i in 0..5 {
             println!("spawned thread print {}", i);
             thread::sleep(Duration::from_millis(1));

@@ -1,5 +1,5 @@
-use tokio::{net::UdpSocket, sync::mpsc};
 use std::{io, net::SocketAddr, sync::Arc};
+use tokio::{net::UdpSocket, sync::mpsc};
 
 #[tokio::main]
 async fn main() -> io::Result<()> {

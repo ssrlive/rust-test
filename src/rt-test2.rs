@@ -10,8 +10,7 @@ fn main() {
 
         // 让上面的异步任务跑起来
         time::sleep(time::Duration::from_millis(1)).await;
-        task.abort();  // 取消任务
-        // 取消任务之后，可以取得JoinError
+        task.abort(); // 取消任务, 之后，可以取得 JoinError
         let abort_err = task.await.unwrap_err();
         println!("{}", abort_err.is_cancelled());
     })

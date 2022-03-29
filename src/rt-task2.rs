@@ -26,7 +26,9 @@ fn main() {
             println!("local task3");
             time::sleep(time::Duration::from_secs(4)).await;
             println!("local task3 done");
-        }).await.unwrap();
+        })
+        .await
+        .unwrap();
     };
 
     println!("before local tasks running: {}", now());

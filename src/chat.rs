@@ -1,9 +1,9 @@
+use std::net::SocketAddr;
 use tokio::{
     io::{AsyncBufReadExt, AsyncWriteExt, BufReader},
     net::TcpListener,
     sync::broadcast,
 };
-use std::net::SocketAddr;
 
 #[tokio::main]
 async fn main() {

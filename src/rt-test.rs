@@ -1,6 +1,6 @@
 use chrono::Local;
 use std::thread;
-use tokio::{self, task, runtime::Runtime, time};
+use tokio::{self, runtime::Runtime, task, time};
 
 fn now() -> String {
     Local::now().format("%F %T").to_string()
