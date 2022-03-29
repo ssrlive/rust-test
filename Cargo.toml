@@ -10,6 +10,7 @@ futures = { version = "0.3.0", features = ["thread-pool"]}
 tokio = { version = "1.17.0", features = ["full", ] }
 tokio-util = { version = "0.7.0", features = ["full"] }
 bytes = "1.0.0"
+chrono = "0.4.19"
 
 [[bin]]
 name = "echo"
@@ -62,3 +63,23 @@ path = "src/chat2_cli.rs"
 [[bin]]
 name = "tokio-join"
 path = "src/tokio-join.rs"
+
+[[bin]]
+name = "rt-test"
+path = "src/rt-test.rs"
+
+[[bin]]
+name = "rt-test2"
+path = "src/rt-test2.rs"
+
+[[bin]]
+name = "rt-join"
+path = "src/rt-join.rs"
+
+[[bin]]
+name = "rt-task1"
+path = "src/rt-task1.rs"
+
+[[bin]]
+name = "rt-task2"
+path = "src/rt-task2.rs"
