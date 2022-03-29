@@ -83,3 +83,31 @@ path = "src/rt-task1.rs"
 [[bin]]
 name = "rt-task2"
 path = "src/rt-task2.rs"
+
+[[bin]]
+name = "rt-task3"
+path = "src/rt-task3.rs"
+
+[[bin]]
+name = "rt-task4"
+path = "src/rt-task4.rs"
+
+[[bin]]
+name = "rt-select1"
+path = "src/rt-select1.rs"
+
+[[bin]]
+name = "rt-select2"
+path = "src/rt-select2.rs"
+
+[[bin]]
+name = "rt-timer1"
+path = "src/rt-timer1.rs"
+
+[[bin]]
+name = "rt-timer2"
+path = "src/rt-timer2.rs"
+
+[[bin]]
+name = "rt-timer3"
+path = "src/rt-timer3.rs"
