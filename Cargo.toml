@@ -11,6 +11,9 @@ tokio = { version = "1.17.0", features = ["full", ] }
 tokio-util = { version = "0.7.0", features = ["full"] }
 bytes = "1.0.0"
 chrono = "0.4.19"
+tracing = "0.1.29"
+tracing-appender = "0.2.0"
+tracing-subscriber = { version = "0.3.3" }
 
 [[bin]]
 name = "echo"
@@ -111,3 +114,95 @@ path = "src/rt-timer2.rs"
 [[bin]]
 name = "rt-timer3"
 path = "src/rt-timer3.rs"
+
+[[bin]]
+name = "rt-timer4"
+path = "src/rt-timer4.rs"
+
+[[bin]]
+name = "rt-timer5"
+path = "src/rt-timer5.rs"
+
+[[bin]]
+name = "rt-timer6"
+path = "src/rt-timer6.rs"
+
+[[bin]]
+name = "rt-timer7"
+path = "src/rt-timer7.rs"
+
+[[bin]]
+name = "rt-sync01"
+path = "src/rt-sync01.rs"
+
+[[bin]]
+name = "rt-sync02"
+path = "src/rt-sync02.rs"
+
+[[bin]]
+name = "rt-sync03"
+path = "src/rt-sync03.rs"
+
+[[bin]]
+name = "rt-sync04"
+path = "src/rt-sync04.rs"
+
+[[bin]]
+name = "rt-sync05"
+path = "src/rt-sync05.rs"
+
+[[bin]]
+name = "rt-sync06"
+path = "src/rt-sync06.rs"
+
+[[bin]]
+name = "rt-sync07"
+path = "src/rt-sync07.rs"
+
+[[bin]]
+name = "rt-sync08"
+path = "src/rt-sync08.rs"
+
+[[bin]]
+name = "rt-sync09"
+path = "src/rt-sync09.rs"
+
+[[bin]]
+name = "rt-sync10"
+path = "src/rt-sync10.rs"
+
+[[bin]]
+name = "rt-sync11"
+path = "src/rt-sync11.rs"
+
+[[bin]]
+name = "rt-sync12"
+path = "src/rt-sync12.rs"
+
+[[bin]]
+name = "rt-sync13"
+path = "src/rt-sync13.rs"
+
+[[bin]]
+name = "rt-sync14"
+path = "src/rt-sync14.rs"
+
+[[bin]]
+name = "rt-sync15"
+path = "src/rt-sync15.rs"
+
+[[bin]]
+name = "rt-sync16"
+path = "src/rt-sync16.rs"
+
+[[bin]]
+name = "rt-sync17"
+path = "src/rt-sync17.rs"
+
+[[bin]]
+name = "rt-sync18"
+path = "src/rt-sync18.rs"
+
+[[bin]]
+name = "trace"
+path = "src/trace.rs"
