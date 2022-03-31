@@ -14,6 +14,7 @@ chrono = "0.4.19"
 tracing = "0.1.29"
 tracing-appender = "0.2.0"
 tracing-subscriber = { version = "0.3.3" }
+hello-world-derive = { path = "hello-world-derive" }
 
 [[bin]]
 name = "echo"

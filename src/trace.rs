@@ -4,6 +4,16 @@ use tracing::*;
 use tracing_subscriber::fmt::format::Writer;
 use tracing_subscriber::{self, fmt::time::FormatTime};
 
+#[macro_use]
+extern crate hello_world_derive;
+
+trait THelloWorld {
+    fn hello();
+}
+
+#[derive(HelloWorld)]
+struct FrenchToast;
+
 // 用来格式化日志的输出时间格式
 struct LocalTimer;
 
@@ -57,4 +67,6 @@ fn main() {
     info!("tracing-info");
     warn!("tracing-warn");
     error!("tracing-error");
+
+    FrenchToast::hello();
 }
