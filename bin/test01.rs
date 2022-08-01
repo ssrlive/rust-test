@@ -105,7 +105,6 @@ fn main() {
     println!("main ends");
 }
 
-
 //
 // rust 中 move, copy, clone, drop 和闭包捕获
 //
@@ -120,7 +119,7 @@ fn test_clone_struct() {
         Text,
         Digit,
     }
-    
+
     #[allow(dead_code)]
     #[derive(Debug, Clone)]
     struct S2 {
@@ -148,7 +147,7 @@ fn test_fn_i8() {
 
     let v2 = f();
 
-    i+= 10;
+    i += 10;
 
     assert_eq!(2, v);
     assert_eq!(2, v2);
@@ -173,8 +172,7 @@ fn test_fn_mut_i8() {
 }
 
 #[test]
-fn test_fn_mut_i8_move()
-{
+fn test_fn_mut_i8_move() {
     let mut i = 1_i8;
     let mut f = move || {
         i += 1;
@@ -255,7 +253,7 @@ fn test_fn_once_string() {
     let mut s = "Hello".to_owned();
     let f = || {
         s.push_str(" world");
-        s   // s被消耗
+        s // s被消耗
     };
 
     // s被move进f闭包中，s被消耗，是FnOnce trait
@@ -263,7 +261,7 @@ fn test_fn_once_string() {
 
     // s变量已经被move了，不能再被borrowed
     // dbg!(&s);
-    
+
     // f只能调用一次
     // let v2 = f();
 
@@ -284,7 +282,7 @@ fn test_fn_once_move_string() {
 
     // s变量已经被move了，不能再被borrowed
     // dbg!(&s);
-    
+
     // f只能调用一次
     // let v2 = f();
 
