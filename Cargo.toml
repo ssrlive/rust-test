@@ -207,3 +207,7 @@ path = "src/rt-sync18.rs"
 [[bin]]
 name = "trace"
 path = "src/trace.rs"
+
+[[bin]]
+name = "test01"
+path = "bin/test01.rs"
