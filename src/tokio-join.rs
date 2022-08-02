@@ -1,13 +1,13 @@
-use tokio;
 use tokio::runtime::Runtime;
+use tokio::{self, time};
 
 async fn function0() {
-    tokio::time::sleep(tokio::time::Duration::from_secs(2)).await;
+    time::sleep(tokio::time::Duration::from_secs(2)).await;
     println!("==== function0 ====");
 }
 
 async fn function1() {
-    tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+    time::sleep(tokio::time::Duration::from_secs(1)).await;
     println!("==== function1 ====");
 }
 

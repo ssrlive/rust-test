@@ -14,8 +14,8 @@ impl Rectangle {
 
 fn main() {
     let a = Rectangle {
-        width: 09,
-        height: 977,
+        width: 9_u32,
+        height: 977_u32,
     };
     a.demo();
 }
