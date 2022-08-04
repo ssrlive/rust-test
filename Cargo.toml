@@ -217,3 +217,7 @@ path = "bin/test01.rs"
 [[bin]]
 name = "redis"
 path = "bin/redis.rs"
+
+[[bin]]
+name = "asyncio"
+path = "bin/asyncio.rs"
