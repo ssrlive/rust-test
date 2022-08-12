@@ -35,4 +35,11 @@ fn main() {
         Ok(n) => println!("{}", n),
         Err(err) => println!("Error: {:?}", err),
     }
+
+    use std::cell::RefCell;
+    let x = RefCell::new(vec![1, 2, 3, 4]);
+    println!("{:?}", x.borrow());
+    x.borrow_mut().push(5);
+    println!("{:?}", x.borrow());
+    println!("{:?}", x);
 }
