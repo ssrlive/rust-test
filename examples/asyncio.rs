@@ -25,39 +25,33 @@ async fn process_client(client_stream: TcpStream) {
     let (client_reader, client_writer) = client_stream.into_split();
     let (msg_tx, msg_rx) = mpsc::channel::<String>(100);
 
-    // 从客户端读取的异步子任务
-    let mut read_task = tokio::spawn(async move {
-        read_from_client(client_reader, msg_tx).await;
-    });
-
-    // 向客户端写入的异步子任务
-    let mut write_task = tokio::spawn(async move {
-        write_to_client(client_writer, msg_rx).await;
-    });
-
     // 无论是读任务还是写任务的终止，另一个任务都将没有继续存在的意义，因此都将另一个任务也终止
-    if tokio::try_join!(&mut read_task, &mut write_task).is_err() {
-        eprintln!("read_task/write_task terminated");
-        read_task.abort();
-        write_task.abort();
+    if let Err(e) = tokio::try_join!(
+        read_from_client(client_reader, msg_tx),
+        write_to_client(client_writer, msg_rx)
+    ) {
+        eprintln!("tunnel terminated with error: \"{}\"", e);
     }
     println!("client disconnected");
 }
 
 /// 从客户端读取
-async fn read_from_client(reader: OwnedReadHalf, msg_tx: mpsc::Sender<String>) {
+async fn read_from_client(
+    reader: OwnedReadHalf,
+    msg_tx: mpsc::Sender<String>,
+) -> anyhow::Result<()> {
     let mut buf_reader = tokio::io::BufReader::new(reader);
     let mut buf = String::new();
     loop {
         match buf_reader.read_line(&mut buf).await {
-            Err(_e) => {
-                eprintln!("read from client error");
-                break;
+            Err(e) => {
+                eprintln!("read from client error \"{}\"", e);
+                break Err(anyhow::anyhow!(e));
             }
             // 遇到了EOF
             Ok(0) => {
                 println!("client closed");
-                break;
+                break Ok(());
             }
             Ok(n) => {
                 // read_line()读取时会包含换行符，因此去除行尾换行符
@@ -67,9 +61,9 @@ async fn read_from_client(reader: OwnedReadHalf, msg_tx: mpsc::Sender<String>) {
                 println!("read {} bytes from client. content: {}", n, content);
                 // 将内容发送给writer，让writer响应给客户端，
                 // 如果无法发送给writer，继续从客户端读取内容将没有意义，因此break退出
-                if msg_tx.send(content).await.is_err() {
-                    eprintln!("receiver closed");
-                    break;
+                if let Err(e) = msg_tx.send(content).await {
+                    eprintln!("receiver closed \"{}\"", e);
+                    break Err(anyhow::anyhow!(e));
                 }
             }
         }
@@ -77,13 +71,24 @@ async fn read_from_client(reader: OwnedReadHalf, msg_tx: mpsc::Sender<String>) {
 }
 
 /// 写给客户端
-async fn write_to_client(writer: OwnedWriteHalf, mut msg_rx: mpsc::Receiver<String>) {
+async fn write_to_client(
+    writer: OwnedWriteHalf,
+    mut msg_rx: mpsc::Receiver<String>,
+) -> anyhow::Result<()> {
     let mut buf_writer = tokio::io::BufWriter::new(writer);
-    while let Some(mut str) = msg_rx.recv().await {
-        str.push('\n');
-        if let Err(e) = buf_writer.write_all(str.as_bytes()).await {
-            eprintln!("write to client failed: {}", e);
-            break;
+    loop {
+        match msg_rx.recv().await {
+            None => {
+                eprintln!("sender closed");
+                break Err(anyhow::anyhow!("sender closed"));
+            }
+            Some(mut str) => {
+                str.push('\n');
+                if let Err(e) = buf_writer.write_all(str.as_bytes()).await {
+                    eprintln!("write to client failed: {}", e);
+                    break Err(anyhow::anyhow!(e));
+                }
+            }
         }
     }
 }
