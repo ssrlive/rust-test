@@ -40,17 +40,23 @@ async fn main() {
             Ok(())
         } else {
             // random error
-            let err = format!("two {id} ===failed===: {}", now());
+            let err = format!("two {id} failed: {}", now());
             println!("{err}");
             Err(anyhow::anyhow!(err))
         }
     }
     // join! 必须等待所有任务完成, 即使其中有一个任务失败也會等待所有任务完成
-    let _ = tokio::join!(do_one(1), do_two(2));
+    match tokio::join!(do_one(1), do_two(2)) {
+        (Ok(_), Ok(_)) => println!("---- all done: {} ----", now()),
+        (Ok(_), Err(e)) => println!("---- two failed: {} ----", e),
+        (Err(e), Ok(_)) => println!("---- one failed: {} ----", e),
+        (Err(e1), Err(e2)) => println!("---- both failed: {}, {} ----", e1, e2),
+    }
 
     // try_join! 要么等待所有异步任务正常完成，要么等待第一个返回 Result Err 的任务出现
-    if tokio::try_join!(do_one(3), do_two(4)).is_err() {
-        println!("one of the tasks failed");
+    match tokio::try_join!(do_one(3), do_two(4)) {
+        Ok(_) => println!("==== all done: {} ====", now()),
+        Err(e) => println!("==== someone failed: \"{}\" ====", e),
     }
 
     // LocalSet 让异步任务被放在一个独立的本地任务队列中，它们不会跨线程执行
