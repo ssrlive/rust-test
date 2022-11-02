@@ -67,4 +67,3 @@ async fn main() {
     });
     local_task.await;
 }
-

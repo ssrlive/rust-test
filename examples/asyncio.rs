@@ -22,6 +22,7 @@ async fn main() {
 }
 
 async fn process_client(client_stream: TcpStream) {
+    let addr = client_stream.peer_addr().unwrap();
     let (client_reader, client_writer) = client_stream.into_split();
     let (msg_tx, msg_rx) = mpsc::channel::<String>(100);
 
@@ -32,7 +33,7 @@ async fn process_client(client_stream: TcpStream) {
     ) {
         eprintln!("tunnel terminated with error: \"{}\"", e);
     }
-    println!("client disconnected");
+    println!("client {} disconnected", addr);
 }
 
 /// 从客户端读取
