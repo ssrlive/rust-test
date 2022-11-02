@@ -18,15 +18,4 @@ hello-world-derive = { path = "hello-world-derive" }
 redis = { version = "0.22.1", features = ["tokio-comp"] }
 structopt = { version = "0.3", default-features = false }
 anyhow = "1.0.61"
-
-[[bin]]
-name = "test01"
-path = "bin/test01.rs"
-
-[[bin]]
-name = "redis"
-path = "bin/redis.rs"
-
-[[bin]]
-name = "asyncio"
-path = "bin/asyncio.rs"
+rand = "0.8.5"
