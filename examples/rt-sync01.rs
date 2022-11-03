@@ -3,17 +3,20 @@ use tokio::{self, runtime::Runtime, sync};
 fn main() {
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
-        let (tx, rx) = sync::oneshot::channel();
+        let (tx, rx) = sync::oneshot::channel::<i32>();
 
+        // drop(tx);
+        // drop(rx);
         tokio::spawn(async move {
-            if tx.send(33).is_err() {
-                println!("receiver dropped");
+            if let Err(e) = tx.send(33) {
+                println!("receiver dropped first: {:?}", e);
             }
         });
 
         match rx.await {
             Ok(value) => println!("received: {:?}", value),
-            Err(_) => println!("sender dropped"),
+            Err(e) => println!("sender dropped first: {:?}", e),
         };
+        // tokio::time::sleep(std::time::Duration::from_secs(1)).await;
     });
 }
