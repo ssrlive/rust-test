@@ -18,7 +18,7 @@ async fn add_1(mutex: &Mutex<u64>) {
 }
 
 #[tokio::main]
-async fn main() {
+async fn main() -> anyhow::Result<()> {
     let mutex = Arc::new(Mutex::new(0));
     let mut handles = Vec::new();
 
@@ -31,6 +31,7 @@ async fn main() {
     }
 
     for h in handles {
-        h.await.expect("something went wrong");
+        h.await?;
     }
+    Ok(())
 }

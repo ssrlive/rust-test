@@ -17,4 +17,6 @@ async fn main() {
     // 之后可正常获取通道中的数据
     assert_eq!(20, rx.recv().await.unwrap());
     assert_eq!(30, rx.recv().await.unwrap());
+
+    println!("done");
 }

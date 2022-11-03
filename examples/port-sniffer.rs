@@ -1,11 +1,8 @@
 use core::time;
+use std::io::{self, Write};
 use std::net::{TcpStream, ToSocketAddrs};
-use std::sync::mpsc::{channel, Sender};
+use std::sync::mpsc::{self, Sender};
 use std::thread;
-use std::{
-    error,
-    io::{self, Write},
-};
 use structopt::StructOpt;
 
 const MAX: u16 = 65535;
@@ -29,16 +26,17 @@ fn scan(
     host: String,
     num_threads: u16,
     timeout: u64,
-) -> Result<(), Box<dyn error::Error>> {
+) -> anyhow::Result<()> {
     let mut port: u16 = start_port + 1;
     let timeout = time::Duration::from_secs(timeout);
     loop {
         let addr = format!("{}:{}", host, port);
-        let addr = addr.to_socket_addrs()?.next().unwrap();
+        let mut addr = addr.to_socket_addrs()?;
+        let addr = addr.next().ok_or(anyhow::anyhow!("unknown error"))?;
         if TcpStream::connect_timeout(&addr, timeout).is_ok() {
             print!(".");
-            io::stdout().flush().unwrap();
-            tx.send(port).unwrap();
+            io::stdout().flush()?;
+            tx.send(port)?;
         }
 
         if (MAX - port) <= num_threads {
@@ -49,11 +47,11 @@ fn scan(
     Ok(())
 }
 
-fn main() -> Result<(), Box<dyn error::Error>> {
+fn main() -> anyhow::Result<()> {
     let arguments = Arguments::from_args();
 
     let num_threads = arguments.threads;
-    let (tx, rx) = channel();
+    let (tx, rx) = mpsc::channel();
     for i in 0..num_threads {
         let tx = tx.clone();
         let host = arguments.ipaddr.clone();

@@ -11,7 +11,7 @@ fn now() -> String {
 }
 
 #[tokio::main]
-async fn main() {
+async fn main() -> anyhow::Result<()> {
     // 只有 3 个信号灯的信号量
     let semaphore = Arc::new(Semaphore::new(3));
 
@@ -29,6 +29,7 @@ async fn main() {
     }
 
     for h in handles {
-        h.await.unwrap();
+        h.await?;
     }
+    Ok(())
 }

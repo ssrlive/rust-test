@@ -1,12 +1,8 @@
 use std::sync::Arc;
-use tokio::{
-    self,
-    sync,
-    // time::{self, Duration},
-};
+use tokio::{self, sync};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> anyhow::Result<()> {
     let mutex = Arc::new(sync::Mutex::new(0));
 
     let mut handles = Vec::new();
@@ -21,8 +17,8 @@ async fn main() {
         handles.push(handle);
     }
 
-    //time::sleep(Duration::from_secs(1)).await;
     for handle in handles {
-        handle.await.expect("something went wrong");
+        handle.await?;
     }
+    Ok(())
 }

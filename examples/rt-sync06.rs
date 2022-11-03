@@ -9,16 +9,21 @@ async fn main() {
     // Sender 的 subscribe() 方法可生成新的 Receiver
     let mut rx2 = tx.subscribe();
 
-    tokio::spawn(async move {
+    let t1 = tokio::spawn(async move {
         assert_eq!(rx1.recv().await.unwrap(), 10);
         assert_eq!(rx1.recv().await.unwrap(), 20);
+        println!("t1 done");
     });
 
-    tokio::spawn(async move {
+    let t2 = tokio::spawn(async move {
         assert_eq!(rx2.recv().await.unwrap(), 10);
         assert_eq!(rx2.recv().await.unwrap(), 20);
+        println!("t2 done");
     });
 
     tx.send(10).unwrap();
     tx.send(20).unwrap();
+
+    t1.await.unwrap();
+    t2.await.unwrap();
 }

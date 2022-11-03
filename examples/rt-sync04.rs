@@ -15,8 +15,8 @@ async fn main() {
     for i in 1..=7 {
         let tx = tx.clone();
         tokio::spawn(async move {
-            if tx.send(i).await.is_err() {
-                println!("receiver closed");
+            if let Err(e) = tx.send(i).await {
+                println!("error: \"{}\"", e);
                 return;
             }
             println!("sended: {}, {}", i, now());
