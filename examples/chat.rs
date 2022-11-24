@@ -13,27 +13,33 @@ async fn main() -> anyhow::Result<()> {
         let tx = tx.clone();
         let mut rx = tx.subscribe();
         tokio::spawn(async move {
-            let (reader, mut writer) = stream.split();
-            let mut reader = BufReader::new(reader);
-            let mut line = String::new();
-            loop {
-                tokio::select! {
-                    result = reader.read_line(&mut line) => {
-                        if result? == 0 {
-                            break;
+            let handler = async move {
+                let (reader, mut writer) = stream.split();
+                let mut reader = BufReader::new(reader);
+                let mut line = String::new();
+                loop {
+                    tokio::select! {
+                        result = reader.read_line(&mut line) => {
+                            if result? == 0 {
+                                break;
+                            }
+                            tx.send((addr, line.clone()))?;
+                            line.clear();
                         }
-                        tx.send((addr, line.clone()))?;
-                        line.clear();
-                    }
-                    result = rx.recv() => {
-                        let (other_addr, msg) = result?;
-                        if addr != other_addr {
-                            writer.write_all(msg.as_bytes()).await?;
+                        result = rx.recv() => {
+                            let (other_addr, msg) = result?;
+                            if addr != other_addr {
+                                writer.write_all(msg.as_bytes()).await?;
+                            }
                         }
                     }
                 }
+                Ok::<_, anyhow::Error>(())
+            };
+            if let Err(e) = handler.await {
+                eprintln!("{e}");
             }
-            Ok::<_, anyhow::Error>(())
+            println!("{} disconnected", addr);
         });
     }
 }
