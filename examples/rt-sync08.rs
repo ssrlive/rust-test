@@ -8,7 +8,7 @@ async fn main() -> anyhow::Result<()> {
     // Recevier 端，通过 changed() 来等待通道的数据发生变化
     // 通过 borrow() 引用通道中的数据
     let h = tokio::spawn(async move {
-        if let Ok(_) = rx.changed().await {
+        if rx.changed().await.is_ok() {
             println!("received = {:?}", *rx.borrow());
         }
     });
