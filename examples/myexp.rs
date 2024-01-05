@@ -1,4 +1,7 @@
-use std::{thread, sync::{Arc, Mutex}};
+use std::{
+    sync::{Arc, Mutex},
+    thread,
+};
 
 const CONST: i32 = 42;
 
